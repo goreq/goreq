@@ -2,6 +2,6 @@ package gore
 
 import "net/http"
 
-type Client interface {
+type Gore interface {
 	Get(url string, header http.Header) (*http.Response, error)
 }

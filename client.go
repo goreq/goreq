@@ -14,7 +14,7 @@ type client struct {
 	baseHeader http.Header
 }
 
-func New(opts ...Option) Client {
+func New(opts ...Option) Gore {
 	c := &client{}
 	for _, opt := range opts {
 		opt(c)

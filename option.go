@@ -24,3 +24,9 @@ func WithBaseHeader(header http.Header) Option {
 		c.baseHeader = header
 	}
 }
+
+func WithErrorHandler(handler ErrorHandler) Option {
+	return func(c *client) {
+		c.errorHandler = handler
+	}
+}

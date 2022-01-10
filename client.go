@@ -13,6 +13,8 @@ type client struct {
 	timeout    time.Duration
 	baseURL    string
 	baseHeader http.Header
+
+	errorHandler ErrorHandler
 }
 
 func New(opts ...Option) Gore {
@@ -48,11 +50,17 @@ func (c client) req(reqUrl string, method string, header http.Header, body []byt
 	reqUrl = c.buildURL(reqUrl)
 	req, err := http.NewRequest(method, reqUrl, bytes.NewBuffer(body))
 	if err != nil {
+		if c.errorHandler != nil {
+			c.errorHandler(err)
+		}
 		return nil, err
 	}
 	req.Header = c.baseHeader
 	resp, err := c.client.Do(req)
 	if err != nil {
+		if c.errorHandler != nil {
+			c.errorHandler(err)
+		}
 		return nil, err
 	}
 

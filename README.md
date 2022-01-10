@@ -8,7 +8,7 @@ g := gore.New(
   gore.WithBaseURL("https://api.products.com"),
 )
 
-resp, err := g.Get("/entities")
+resp, err := g.Get("/entities", nil)
 if err != nil {
   panic(err)
 }

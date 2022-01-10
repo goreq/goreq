@@ -16,6 +16,7 @@ type client struct {
 
 	errorHandler         ErrorHandler
 	beforeRequestHandler BeforeRequestHandler
+	afterResponseHandler AfterResponseHandler
 }
 
 func New(opts ...Option) Gore {
@@ -71,6 +72,10 @@ func (c client) req(reqUrl string, method string, header http.Header, body []byt
 			c.errorHandler(err)
 		}
 		return nil, err
+	}
+
+	if c.afterResponseHandler != nil {
+		c.afterResponseHandler(resp)
 	}
 
 	return resp, nil

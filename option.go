@@ -36,3 +36,9 @@ func WithBeforeRequestHandler(handler BeforeRequestHandler) Option {
 		c.beforeRequestHandler = handler
 	}
 }
+
+func WithAfterResponseHandler(handler AfterResponseHandler) Option {
+	return func(c *client) {
+		c.afterResponseHandler = handler
+	}
+}

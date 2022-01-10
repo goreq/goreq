@@ -10,3 +10,4 @@ type Gore interface {
 }
 
 type ErrorHandler func(err error)
+type BeforeRequestHandler func(req *http.Request)

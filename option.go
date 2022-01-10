@@ -30,3 +30,9 @@ func WithErrorHandler(handler ErrorHandler) Option {
 		c.errorHandler = handler
 	}
 }
+
+func WithBeforeRequestHandler(handler BeforeRequestHandler) Option {
+	return func(c *client) {
+		c.beforeRequestHandler = handler
+	}
+}

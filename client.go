@@ -26,21 +26,19 @@ func New(opts ...Option) Gore {
 	return c
 }
 
-func (c client) validateURL(fromUrl string) (string, error) {
+func (c client) validateURL(fromUrl string) error {
 	toUrl, err := url.Parse(fromUrl)
 	if err != nil || toUrl.Scheme == "" || toUrl.Host == "" {
-		return "", errors.New("invalid URL")
+		return errors.New("invalid URL")
 	}
 
-	return toUrl.String(), nil
+	return nil
 }
 
 func (c client) buildURL(fromUrl string) string {
-	builtUrl, err := c.validateURL(fromUrl)
+	err := c.validateURL(fromUrl)
 	if err != nil {
 		fromUrl = c.baseURL + fromUrl
-	} else {
-		fromUrl = builtUrl
 	}
 
 	return fromUrl

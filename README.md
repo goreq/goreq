@@ -24,4 +24,4 @@ defer resp.Body.Close()
 
 # Todos
 * [x] Global error handler
-* [ ] Global request and response hooks
+* [x] Global request and response hooks

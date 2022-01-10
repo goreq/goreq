@@ -46,9 +46,9 @@ func (c client) buildURL(fromUrl string) string {
 	return fromUrl
 }
 
-func (c client) Get(reqUrl string, header http.Header) (*http.Response, error) {
+func (c client) req(reqUrl string, method string, header http.Header, body []byte) (*http.Response, error) {
 	reqUrl = c.buildURL(reqUrl)
-	req, err := http.NewRequest(http.MethodGet, reqUrl, nil)
+	req, err := http.NewRequest(method, reqUrl, bytes.NewBuffer(body))
 	if err != nil {
 		return nil, err
 	}
@@ -61,17 +61,10 @@ func (c client) Get(reqUrl string, header http.Header) (*http.Response, error) {
 	return resp, nil
 }
 
-func (c client) Post(reqUrl string, header http.Header, body []byte) (*http.Response, error) {
-	reqUrl = c.buildURL(reqUrl)
-	req, err := http.NewRequest(http.MethodPost, reqUrl, bytes.NewBuffer(body))
-	if err != nil {
-		return nil, err
-	}
-	req.Header = c.baseHeader
-	resp, err := c.client.Do(req)
-	if err != nil {
-		return nil, err
-	}
+func (c client) Get(reqUrl string, header http.Header) (*http.Response, error) {
+	return c.req(reqUrl, http.MethodGet, header, nil)
+}
 
-	return resp, nil
+func (c client) Post(reqUrl string, header http.Header, body []byte) (*http.Response, error) {
+	return c.req(reqUrl, http.MethodPost, header, body)
 }

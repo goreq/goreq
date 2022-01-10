@@ -23,5 +23,5 @@ defer resp.Body.Close()
 * Flexible, because it use raw response object
 
 # Todos
-* [ ] Global error handler
+* [x] Global error handler
 * [ ] Global request and response hooks

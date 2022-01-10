@@ -1,7 +1,10 @@
 package gore
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type Gore interface {
 	Get(url string, header http.Header) (*http.Response, error)
+	Post(url string, header http.Header, body []byte) (*http.Response, error)
 }

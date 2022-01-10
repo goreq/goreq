@@ -19,7 +19,7 @@ defer resp.Body.Close()
 ```
 
 # Features
-* Reusable, prevent rewrite options with single object for multiple request
+* Reusable, prevent options rewrite using single object for multiple request
 * Flexible, because it use raw response object
 
 # Todos

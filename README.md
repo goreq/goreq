@@ -25,3 +25,4 @@ defer resp.Body.Close()
 # Todos
 * [x] Global error handler
 * [x] Global request and response hooks
+* [ ] Use custom request object

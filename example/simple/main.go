@@ -21,7 +21,7 @@ func main() {
 	panicOnError(err)
 	defer resp.Body.Close()
 
-	data := []interface{}{}
+	var data interface{}
 	err = resp.Json(&data)
 	panicOnError(err)
 

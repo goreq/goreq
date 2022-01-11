@@ -3,6 +3,7 @@ package gore
 import (
 	"bytes"
 	"errors"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
@@ -87,4 +88,17 @@ func (c client) Get(reqUrl string, header http.Header) (*Response, error) {
 
 func (c client) Post(reqUrl string, header http.Header, body []byte) (*Response, error) {
 	return c.req(reqUrl, http.MethodPost, header, body)
+}
+
+func (c client) Do(req *http.Request) (*Response, error) {
+	var body []byte
+	var err error
+
+	if req.Body != nil {
+		body, err = ioutil.ReadAll(req.Body)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return c.req(req.URL.String(), req.Method, req.Header, body)
 }

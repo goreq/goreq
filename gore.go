@@ -5,8 +5,8 @@ import (
 )
 
 type Gore interface {
-	Get(url string, header http.Header) (*http.Response, error)
-	Post(url string, header http.Header, body []byte) (*http.Response, error)
+	Get(url string, header http.Header) (*Response, error)
+	Post(url string, header http.Header, body []byte) (*Response, error)
 }
 
 type ErrorHandler func(err error)

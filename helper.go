@@ -4,10 +4,10 @@ import (
 	"net/http"
 )
 
-func Get(url string, header http.Header, opts ...Option) (*http.Response, error) {
+func Get(url string, header http.Header, opts ...Option) (*Response, error) {
 	return New(opts...).Get(url, header)
 }
 
-func Post(url string, header http.Header, body []byte, opts ...Option) (*http.Response, error) {
+func Post(url string, header http.Header, body []byte, opts ...Option) (*Response, error) {
 	return New(opts...).Post(url, header, body)
 }

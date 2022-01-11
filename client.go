@@ -90,6 +90,18 @@ func (c client) Post(reqUrl string, header http.Header, body []byte) (*Response,
 	return c.req(reqUrl, http.MethodPost, header, body)
 }
 
+func (c client) Put(reqUrl string, header http.Header, body []byte) (*Response, error) {
+	return c.req(reqUrl, http.MethodPut, header, body)
+}
+
+func (c client) Patch(reqUrl string, header http.Header, body []byte) (*Response, error) {
+	return c.req(reqUrl, http.MethodPatch, header, body)
+}
+
+func (c client) Delete(reqUrl string, header http.Header) (*Response, error) {
+	return c.req(reqUrl, http.MethodDelete, header, nil)
+}
+
 func (c client) Do(req *http.Request) (*Response, error) {
 	var body []byte
 	var err error

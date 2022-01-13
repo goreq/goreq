@@ -26,3 +26,9 @@ defer resp.Body.Close()
 * [x] Global error handler
 * [x] Global request and response hooks
 * [x] Use custom request object
+
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/hadihammurabi/gore.svg)](https://starchart.cc/hadihammurabi/gore)
+

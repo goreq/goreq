@@ -37,8 +37,12 @@ func WithBeforeRequestHandler(handler BeforeRequestHandler) Option {
 	}
 }
 
-func WithAfterResponseHandler(handler AfterResponseHandler) Option {
+func WithAfterResponseHandler(handlers ...AfterResponseHandler) Option {
 	return func(c *client) {
-		c.afterResponseHandler = handler
+		c.afterResponseHandler = func(resp *http.Response) {
+			for _, handler := range handlers {
+				handler(resp)
+			}
+		}
 	}
 }

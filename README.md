@@ -4,6 +4,19 @@ Simple HTTP client for Go
 # Example
 
 ```go
+resp, err := gore.Get("https://api.products.com/entities", nil)
+if err != nil {
+  panic(err)
+}
+
+defer resp.Body.Close()
+
+// do anything with the resp object
+```
+
+or, using base URL like this
+
+```go
 g := gore.New(
   gore.WithBaseURL("https://api.products.com"),
 )

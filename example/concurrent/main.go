@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/hadihammurabi/gore"
+	"github.com/goreq/goreq"
 )
 
 type Contact map[string]interface{}
 type Contacts []Contact
 
-func getContacts(g gore.Gore) Contacts {
+func getContacts(g goreq.Gore) Contacts {
 	contacts := make(Contacts, 0)
 	var wg sync.WaitGroup
 
@@ -24,7 +24,7 @@ func getContacts(g gore.Gore) Contacts {
 	return contacts
 }
 
-func worker(g gore.Gore, id string, contacts *Contacts, wg *sync.WaitGroup) {
+func worker(g goreq.Gore, id string, contacts *Contacts, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	resp, err := g.Get("/contacts/"+id, nil)
@@ -44,8 +44,8 @@ func worker(g gore.Gore, id string, contacts *Contacts, wg *sync.WaitGroup) {
 }
 
 func main() {
-	g := gore.New(
-		gore.WithBaseURL("https://my-json-server.typicode.com/hadihammurabi/flutter-webservice"),
+	g := goreq.New(
+		goreq.WithBaseURL("https://my-json-server.typicode.com/hadihammurabi/flutter-webservice"),
 	)
 
 	contacts := getContacts(g)

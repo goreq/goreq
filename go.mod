@@ -1,3 +1,3 @@
-module github.com/hadihammurabi/gore
+module github.com/goreq/goreq
 
 go 1.17

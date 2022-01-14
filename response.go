@@ -1,4 +1,4 @@
-package gore
+package goreq
 
 import (
 	"encoding/json"

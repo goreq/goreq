@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/hadihammurabi/gore"
+	"github.com/goreq/goreq"
 )
 
 func panicOnError(err error) {
@@ -13,8 +13,8 @@ func panicOnError(err error) {
 }
 
 func main() {
-	g := gore.New(
-		gore.WithBaseURL("https://my-json-server.typicode.com/hadihammurabi/flutter-webservice"),
+	g := goreq.New(
+		goreq.WithBaseURL("https://my-json-server.typicode.com/hadihammurabi/flutter-webservice"),
 	)
 
 	resp, err := g.Get("/contacts", nil)

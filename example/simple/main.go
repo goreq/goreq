@@ -15,7 +15,6 @@ func panicOnError(err error) {
 func main() {
 	g := goreq.New(
 		goreq.WithBaseURL("https://my-json-server.typicode.com/hadihammurabi/flutter-webservice"),
-		goreq.WithAfterResponseHandler(),
 	)
 
 	resp, err := g.Get("/contacts", nil)

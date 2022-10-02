@@ -35,7 +35,5 @@ defer resp.Body.Close()
 * Reusable, prevent options rewrite using single object for multiple request
 * Flexible, because it use raw response object
 
-# Stargazers over time
-
-[![Stargazers over time](https://starchart.cc/hadihammurabi/gore.svg)](https://starchart.cc/hadihammurabi/gore)
-
+# License
+This library under the [GNU General Public License v3.0](./LICENSE)

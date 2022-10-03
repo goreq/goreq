@@ -35,5 +35,8 @@ defer resp.Body.Close()
 * Reusable, prevent options rewrite using single object for multiple request
 * Flexible, because it use raw response object
 
+# Contributing
+Let's code together by following [Contributing Guidelines](./CONTRIBUTING.md)
+
 # License
 This library under the [GNU General Public License v3.0](./LICENSE)

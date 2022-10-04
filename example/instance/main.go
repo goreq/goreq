@@ -13,7 +13,11 @@ func panicOnError(err error) {
 }
 
 func main() {
-	resp, err := goreq.Get("https://my-json-server.typicode.com/hadihammurabi/flutter-webservice/contacts")
+	g := goreq.New(
+		goreq.WithBaseURL("https://my-json-server.typicode.com/hadihammurabi/flutter-webservice"),
+	)
+
+	resp, err := g.Get("/contacts")
 	panicOnError(err)
 	defer resp.Body.Close()
 

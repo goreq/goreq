@@ -5,11 +5,11 @@ import (
 )
 
 type Gore interface {
-	Get(url string, header http.Header) (*Response, error)
-	Post(url string, header http.Header, body []byte) (*Response, error)
-	Put(url string, header http.Header, body []byte) (*Response, error)
-	Patch(url string, header http.Header, body []byte) (*Response, error)
-	Delete(url string, header http.Header) (*Response, error)
+	Get(url string, opts ...Option) (*Response, error)
+	Post(url string, body []byte, opts ...Option) (*Response, error)
+	Put(url string, body []byte, opts ...Option) (*Response, error)
+	Patch(url string, body []byte, opts ...Option) (*Response, error)
+	Delete(url string, opts ...Option) (*Response, error)
 	Do(*http.Request) (*Response, error)
 }
 

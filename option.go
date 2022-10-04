@@ -25,6 +25,20 @@ func WithBaseHeader(header http.Header) Option {
 	}
 }
 
+func WithHeader(header http.Header) Option {
+	return func(c *client) {
+		newHeader := make(http.Header)
+		for key, val := range c.baseHeader {
+			newHeader[key] = val
+		}
+		for key, val := range header {
+			newHeader[key] = val
+		}
+
+		c.baseHeader = newHeader
+	}
+}
+
 func WithErrorHandler(handler ErrorHandler) Option {
 	return func(c *client) {
 		c.errorHandler = handler

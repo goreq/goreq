@@ -4,22 +4,22 @@ import (
 	"net/http"
 )
 
-func Get(url string, header http.Header, opts ...Option) (*Response, error) {
-	return New(opts...).Get(url, header)
+func Get(url string, opts ...Option) (*Response, error) {
+	return New(opts...).Get(url)
 }
 
 func Post(url string, header http.Header, body []byte, opts ...Option) (*Response, error) {
-	return New(opts...).Post(url, header, body)
+	return New(opts...).Post(url, body, opts...)
 }
 
 func Put(url string, header http.Header, body []byte, opts ...Option) (*Response, error) {
-	return New(opts...).Put(url, header, body)
+	return New(opts...).Put(url, body, opts...)
 }
 
 func Patch(url string, header http.Header, body []byte, opts ...Option) (*Response, error) {
-	return New(opts...).Patch(url, header, body)
+	return New(opts...).Patch(url, body, opts...)
 }
 
 func Delete(url string, header http.Header, body []byte, opts ...Option) (*Response, error) {
-	return New(opts...).Delete(url, header)
+	return New(opts...).Delete(url, opts...)
 }

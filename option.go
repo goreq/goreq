@@ -39,6 +39,12 @@ func WithHeader(header http.Header) Option {
 	}
 }
 
+func WithBody(body []byte) Option {
+	return func(c *client) {
+		c.temporaryBody = body
+	}
+}
+
 func WithErrorHandler(handler ErrorHandler) Option {
 	return func(c *client) {
 		c.errorHandler = handler

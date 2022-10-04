@@ -10,10 +10,11 @@ import (
 )
 
 type client struct {
-	client     *http.Client
-	timeout    time.Duration
-	baseURL    string
-	baseHeader http.Header
+	client        *http.Client
+	timeout       time.Duration
+	baseURL       string
+	baseHeader    http.Header
+	temporaryBody []byte
 
 	errorHandler         ErrorHandler
 	beforeRequestHandler BeforeRequestHandler
@@ -95,22 +96,22 @@ func (c client) Get(reqUrl string, opts ...Option) (*Response, error) {
 	return c.req(reqUrl, http.MethodGet, cCopy.baseHeader, nil)
 }
 
-func (c client) Post(reqUrl string, body []byte, opts ...Option) (*Response, error) {
+func (c client) Post(reqUrl string, opts ...Option) (*Response, error) {
 	cCopy := c
 	resolveOptions(&cCopy, opts...)
-	return c.req(reqUrl, http.MethodPost, cCopy.baseHeader, body)
+	return c.req(reqUrl, http.MethodPost, cCopy.baseHeader, cCopy.temporaryBody)
 }
 
-func (c client) Put(reqUrl string, body []byte, opts ...Option) (*Response, error) {
+func (c client) Put(reqUrl string, opts ...Option) (*Response, error) {
 	cCopy := c
 	resolveOptions(&cCopy, opts...)
-	return c.req(reqUrl, http.MethodPut, cCopy.baseHeader, body)
+	return c.req(reqUrl, http.MethodPut, cCopy.baseHeader, cCopy.temporaryBody)
 }
 
-func (c client) Patch(reqUrl string, body []byte, opts ...Option) (*Response, error) {
+func (c client) Patch(reqUrl string, opts ...Option) (*Response, error) {
 	cCopy := c
 	resolveOptions(&cCopy, opts...)
-	return c.req(reqUrl, http.MethodPatch, cCopy.baseHeader, body)
+	return c.req(reqUrl, http.MethodPatch, cCopy.baseHeader, cCopy.temporaryBody)
 }
 
 func (c client) Delete(reqUrl string, opts ...Option) (*Response, error) {

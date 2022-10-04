@@ -6,9 +6,9 @@ import (
 
 type Gore interface {
 	Get(url string, opts ...Option) (*Response, error)
-	Post(url string, body []byte, opts ...Option) (*Response, error)
-	Put(url string, body []byte, opts ...Option) (*Response, error)
-	Patch(url string, body []byte, opts ...Option) (*Response, error)
+	Post(url string, opts ...Option) (*Response, error)
+	Put(url string, opts ...Option) (*Response, error)
+	Patch(url string, opts ...Option) (*Response, error)
 	Delete(url string, opts ...Option) (*Response, error)
 	Do(*http.Request) (*Response, error)
 }

@@ -20,21 +20,37 @@ func TestOptions(t *testing.T) {
 	)
 
 	c := &client{}
-	WithTimeout(expectedTimeout)(c)
-	WithBaseURL(expectedBaseUrl)(c)
-	WithBaseHeader(expectedBaseHeader)(c)
-	WithBody(expectedBody)(c)
-	WithErrorHandler(expectedErrHandler)(c)
-	WithBeforeRequestHandler(expectedBeforeRequestHandler)(c)
-	WithAfterResponseHandler(expectedAfterRequestHandler)(c)
-
 	must := must.New(t)
+
+	WithTimeout(expectedTimeout)(c)
 	must.Equal(c.timeout, expectedTimeout)
+
+	WithBaseURL(expectedBaseUrl)(c)
 	must.Equal(c.baseURL, expectedBaseUrl)
-	must.Equal(c.baseHeader, expectedBaseHeader)
+
+	WithBaseHeader(expectedBaseHeader)(c)
+	WithHeader(expectedBaseHeader)(c)
+	newHeader := make(http.Header)
+	for key, val := range expectedBaseHeader {
+		newHeader[key] = val
+	}
+	for key, val := range expectedBaseHeader {
+		newHeader[key] = val
+	}
+	must.Equal(c.baseHeader, newHeader)
+
+	WithBody(expectedBody)(c)
 	must.Equal(c.temporaryBody, expectedBody)
-	must.NotNil(c.errorHandler)
+
+	WithBeforeRequestHandler(expectedBeforeRequestHandler)(c)
 	must.NotNil(c.beforeRequestHandler)
+
+	WithAfterResponseHandler(expectedAfterRequestHandler)(c)
 	must.NotNil(c.afterResponseHandler)
+
+	WithHeader(expectedBaseHeader)(c)
+
+	WithErrorHandler(expectedErrHandler)(c)
+	must.NotNil(c.errorHandler)
 
 }

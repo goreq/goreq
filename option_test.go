@@ -2,9 +2,10 @@ package goreq
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/golang-must/must"
 )
 
 func TestOptions(t *testing.T) {
@@ -19,44 +20,82 @@ func TestOptions(t *testing.T) {
 	)
 
 	c := &client{}
+	must := must.New(t)
+
 	WithTimeout(expectedTimeout)(c)
+	must.Equal(c.timeout, expectedTimeout)
+
 	WithBaseURL(expectedBaseUrl)(c)
+	must.Equal(c.baseURL, expectedBaseUrl)
+
 	WithBaseHeader(expectedBaseHeader)(c)
+	WithHeader(expectedBaseHeader)(c)
+	newHeader := make(http.Header)
+	for key, val := range expectedBaseHeader {
+		newHeader[key] = val
+	}
+	for key, val := range expectedBaseHeader {
+		newHeader[key] = val
+	}
+	must.Equal(c.baseHeader, newHeader)
+
 	WithBody(expectedBody)(c)
-	WithErrorHandler(expectedErrHandler)(c)
+	must.Equal(c.temporaryBody, expectedBody)
+
 	WithBeforeRequestHandler(expectedBeforeRequestHandler)(c)
+	must.NotNil(c.beforeRequestHandler)
+
 	WithAfterResponseHandler(expectedAfterRequestHandler)(c)
+	must.NotNil(c.afterResponseHandler)
 
-	if c.timeout != expectedTimeout {
-		t.Fatalf("expected timeout of %v but was %v", expectedTimeout, c.timeout)
-	}
+	WithHeader(expectedBaseHeader)(c)
 
-	if c.baseURL != expectedBaseUrl {
-		t.Fatalf("expected base url %s but was %s", expectedBaseUrl, c.baseURL)
-	}
+	WithErrorHandler(expectedErrHandler)(c)
+	must.NotNil(c.errorHandler)
 
-	if c.baseURL != expectedBaseUrl {
-		t.Fatalf("expected base url %s but was %s", expectedBaseUrl, c.baseURL)
-	}
+}
 
-	if !reflect.DeepEqual(c.baseHeader, expectedBaseHeader) {
-		t.Fatalf("expected base header %s but was %s", expectedBaseHeader, c.baseHeader)
-	}
+func TestResolveOptions(t *testing.T) {
+	var (
+		expectedTimeout              = 1 * time.Second
+		expectedBaseUrl              = "http://127.0.0.1/"
+		expectedBaseHeader           = http.Header{"test": {"true"}}
+		expectedBody                 = []byte("test")
+		expectedErrHandler           = ErrorHandler(func(err error) {})
+		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *http.Request) {})
+		expectedAfterRequestHandler  = AfterResponseHandler(func(resp *http.Response) {})
+	)
 
-	if !reflect.DeepEqual(c.temporaryBody, expectedBody) {
-		t.Fatalf("expected base body %v but was %v", expectedBody, c.temporaryBody)
-	}
+	c := &client{}
+	must := must.New(t)
 
-	if c.errorHandler == nil {
-		t.Fatal("unexpected error handler value")
-	}
+	resolveOptions(
+		c,
+		WithTimeout(expectedTimeout),
+		WithBaseURL(expectedBaseUrl),
+		WithBaseHeader(expectedBaseHeader),
+		WithHeader(expectedBaseHeader),
+		WithBody(expectedBody),
+		WithBeforeRequestHandler(expectedBeforeRequestHandler),
+		WithAfterResponseHandler(expectedAfterRequestHandler),
+		WithHeader(expectedBaseHeader),
+		WithErrorHandler(expectedErrHandler),
+	)
 
-	if c.beforeRequestHandler == nil {
-		t.Fatal("unexpected before request handler value")
-	}
+	must.Equal(c.timeout, expectedTimeout)
+	must.Equal(c.baseURL, expectedBaseUrl)
+	must.Equal(c.temporaryBody, expectedBody)
+	must.NotNil(c.beforeRequestHandler)
+	must.NotNil(c.afterResponseHandler)
+	must.NotNil(c.errorHandler)
 
-	if c.afterResponseHandler == nil {
-		t.Fatal("unexpected after response handler value")
+	newHeader := make(http.Header)
+	for key, val := range expectedBaseHeader {
+		newHeader[key] = val
 	}
+	for key, val := range expectedBaseHeader {
+		newHeader[key] = val
+	}
+	must.Equal(c.baseHeader, newHeader)
 
 }

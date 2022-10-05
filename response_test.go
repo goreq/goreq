@@ -5,8 +5,9 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"reflect"
 	"testing"
+
+	"github.com/golang-must/must"
 )
 
 func TestResponse_String(t *testing.T) {
@@ -17,9 +18,8 @@ func TestResponse_String(t *testing.T) {
 		},
 	}
 
-	if r.String() != expectedBody {
-		t.Fatalf("expected response body string %s but was %s", expectedBody, r.String())
-	}
+	must := must.New(t)
+	must.Equal(r.String(), expectedBody)
 }
 
 func TestResponse_Json(t *testing.T) {
@@ -27,10 +27,10 @@ func TestResponse_Json(t *testing.T) {
 		"test": "true",
 	}
 
+	must := must.New(t)
+
 	resBody, err := json.Marshal(testBody)
-	if err != nil {
-		t.Fatal(err)
-	}
+	must.Nil(err)
 
 	r := Response{
 		&http.Response{
@@ -39,13 +39,10 @@ func TestResponse_Json(t *testing.T) {
 	}
 
 	var resp map[string]interface{}
-	if err := r.Json(&resp); err != nil {
-		t.Fatal(err)
-	}
+	err = r.Json(&resp)
 
-	if !reflect.DeepEqual(resp, testBody) {
-		t.Fatal("error in decoded json body")
-	}
+	must.Nil(err)
+	must.Equal(resp, testBody)
 }
 
 func TestResponse_JsonWithDecodeError(t *testing.T) {
@@ -55,8 +52,9 @@ func TestResponse_JsonWithDecodeError(t *testing.T) {
 		},
 	}
 
+	must := must.New(t)
+
 	var resp map[string]interface{}
-	if err := r.Json(&resp); err == nil {
-		t.Fatal("expected error when decoding invalid json")
-	}
+	err := r.Json(&resp)
+	must.NotNil(err)
 }

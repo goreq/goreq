@@ -136,3 +136,15 @@ func TestClientValidateURL(t *testing.T) {
 	must.NotNil(err)
 
 }
+
+func TestClientBuildURL(t *testing.T) {
+
+	g := &client{
+		baseURL: "base.com",
+	}
+	must := must.New(t)
+
+	result := g.buildURL("/api")
+	must.Equal(result, "base.com/api")
+
+}

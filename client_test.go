@@ -1,6 +1,8 @@
 package goreq
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -108,7 +110,12 @@ func TestClientDo(t *testing.T) {
 
 	must := must.New(t)
 
-	req, err := http.NewRequest(http.MethodGet, svr.URL, nil)
+	body, err := json.Marshal(map[string]string{
+		"test": "data",
+	})
+	must.Nil(err)
+
+	req, err := http.NewRequest(http.MethodPost, svr.URL, bytes.NewBuffer(body))
 	must.Nil(err)
 
 	g := New()

@@ -2,9 +2,10 @@ package goreq
 
 import (
 	"net/http"
-	"reflect"
 	"testing"
 	"time"
+
+	"github.com/golang-must/must"
 )
 
 func TestOptions(t *testing.T) {
@@ -27,36 +28,13 @@ func TestOptions(t *testing.T) {
 	WithBeforeRequestHandler(expectedBeforeRequestHandler)(c)
 	WithAfterResponseHandler(expectedAfterRequestHandler)(c)
 
-	if c.timeout != expectedTimeout {
-		t.Fatalf("expected timeout of %v but was %v", expectedTimeout, c.timeout)
-	}
-
-	if c.baseURL != expectedBaseUrl {
-		t.Fatalf("expected base url %s but was %s", expectedBaseUrl, c.baseURL)
-	}
-
-	if c.baseURL != expectedBaseUrl {
-		t.Fatalf("expected base url %s but was %s", expectedBaseUrl, c.baseURL)
-	}
-
-	if !reflect.DeepEqual(c.baseHeader, expectedBaseHeader) {
-		t.Fatalf("expected base header %s but was %s", expectedBaseHeader, c.baseHeader)
-	}
-
-	if !reflect.DeepEqual(c.temporaryBody, expectedBody) {
-		t.Fatalf("expected base body %v but was %v", expectedBody, c.temporaryBody)
-	}
-
-	if c.errorHandler == nil {
-		t.Fatal("unexpected error handler value")
-	}
-
-	if c.beforeRequestHandler == nil {
-		t.Fatal("unexpected before request handler value")
-	}
-
-	if c.afterResponseHandler == nil {
-		t.Fatal("unexpected after response handler value")
-	}
+	must := must.New(t)
+	must.Equal(c.timeout, expectedTimeout)
+	must.Equal(c.baseURL, expectedBaseUrl)
+	must.Equal(c.baseHeader, expectedBaseHeader)
+	must.Equal(c.temporaryBody, expectedBody)
+	must.NotNil(c.errorHandler)
+	must.NotNil(c.beforeRequestHandler)
+	must.NotNil(c.afterResponseHandler)
 
 }

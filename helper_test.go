@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/golang-must/must"
 )
 
 func TestGet(t *testing.T) {
@@ -14,15 +16,13 @@ func TestGet(t *testing.T) {
 	}))
 	defer svr.Close()
 
+	must := must.New(t)
+
 	g := New()
 	resp, err := g.Get(svr.URL, nil)
-	if err != nil {
-		t.Errorf("non-expected err, got %v", err)
-	}
 
+	must.Nil(err)
 	defer resp.Body.Close()
 
-	if resp.String() != expected {
-		t.Errorf("expected %s, got %s", expected, resp.String())
-	}
+	must.Equal(resp.String(), expected)
 }

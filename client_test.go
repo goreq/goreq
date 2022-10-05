@@ -126,3 +126,13 @@ func TestClientDo(t *testing.T) {
 
 	must.Equal(resp.String(), expected)
 }
+
+func TestClientValidateURL(t *testing.T) {
+
+	g := &client{}
+	must := must.New(t)
+
+	err := g.validateURL("")
+	must.NotNil(err)
+
+}

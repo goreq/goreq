@@ -9,7 +9,7 @@ import (
 	"github.com/golang-must/must"
 )
 
-func TestHelperGet(t *testing.T) {
+func TestClientGet(t *testing.T) {
 	expected := "test data"
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, expected)
@@ -18,7 +18,8 @@ func TestHelperGet(t *testing.T) {
 
 	must := must.New(t)
 
-	resp, err := Get(svr.URL)
+	g := New()
+	resp, err := g.Get(svr.URL)
 
 	must.Nil(err)
 	defer resp.Body.Close()
@@ -26,7 +27,7 @@ func TestHelperGet(t *testing.T) {
 	must.Equal(resp.String(), expected)
 }
 
-func TestHelperPost(t *testing.T) {
+func TestClientPost(t *testing.T) {
 	expected := "test data"
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, expected)
@@ -35,7 +36,8 @@ func TestHelperPost(t *testing.T) {
 
 	must := must.New(t)
 
-	resp, err := Post(svr.URL)
+	g := New()
+	resp, err := g.Post(svr.URL)
 
 	must.Nil(err)
 	defer resp.Body.Close()
@@ -43,7 +45,7 @@ func TestHelperPost(t *testing.T) {
 	must.Equal(resp.String(), expected)
 }
 
-func TestHelperPut(t *testing.T) {
+func TestClientPut(t *testing.T) {
 	expected := "test data"
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, expected)
@@ -52,7 +54,8 @@ func TestHelperPut(t *testing.T) {
 
 	must := must.New(t)
 
-	resp, err := Put(svr.URL)
+	g := New()
+	resp, err := g.Put(svr.URL)
 
 	must.Nil(err)
 	defer resp.Body.Close()
@@ -60,7 +63,7 @@ func TestHelperPut(t *testing.T) {
 	must.Equal(resp.String(), expected)
 }
 
-func TestHelperPatch(t *testing.T) {
+func TestClientPatch(t *testing.T) {
 	expected := "test data"
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, expected)
@@ -69,7 +72,8 @@ func TestHelperPatch(t *testing.T) {
 
 	must := must.New(t)
 
-	resp, err := Patch(svr.URL)
+	g := New()
+	resp, err := g.Patch(svr.URL)
 
 	must.Nil(err)
 	defer resp.Body.Close()
@@ -77,7 +81,7 @@ func TestHelperPatch(t *testing.T) {
 	must.Equal(resp.String(), expected)
 }
 
-func TestHelperDelete(t *testing.T) {
+func TestClientDelete(t *testing.T) {
 	expected := "test data"
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, expected)
@@ -86,7 +90,8 @@ func TestHelperDelete(t *testing.T) {
 
 	must := must.New(t)
 
-	resp, err := Delete(svr.URL)
+	g := New()
+	resp, err := g.Delete(svr.URL)
 
 	must.Nil(err)
 	defer resp.Body.Close()

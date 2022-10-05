@@ -56,5 +56,5 @@ func TestResponse_JsonWithDecodeError(t *testing.T) {
 
 	var resp map[string]interface{}
 	err := r.Json(&resp)
-	must.Nil(err)
+	must.NotNil(err)
 }

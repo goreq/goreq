@@ -4,7 +4,7 @@ Simple HTTP client for Go
 # Example
 
 ```go
-resp, err := goreq.Get("https://api.products.com/entities", nil)
+resp, err := goreq.Get("https://api.products.com/entities")
 if err != nil {
   panic(err)
 }
@@ -21,7 +21,7 @@ g := goreq.New(
   gore.WithBaseURL("https://api.products.com"),
 )
 
-resp, err := g.Get("/entities", nil)
+resp, err := g.Get("/entities")
 if err != nil {
   panic(err)
 }

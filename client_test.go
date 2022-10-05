@@ -98,3 +98,24 @@ func TestClientDelete(t *testing.T) {
 
 	must.Equal(resp.String(), expected)
 }
+
+func TestClientDo(t *testing.T) {
+	expected := "test data"
+	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, expected)
+	}))
+	defer svr.Close()
+
+	must := must.New(t)
+
+	req, err := http.NewRequest(http.MethodGet, svr.URL, nil)
+	must.Nil(err)
+
+	g := New()
+	resp, err := g.Do(req)
+	must.Nil(err)
+
+	defer resp.Body.Close()
+
+	must.Equal(resp.String(), expected)
+}

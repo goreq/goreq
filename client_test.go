@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"github.com/golang-must/must"
 )
@@ -147,4 +148,32 @@ func TestClientBuildURL(t *testing.T) {
 	result := g.buildURL("/api")
 	must.Equal(result, "base.com/api")
 
+}
+
+func TestClientReq(t *testing.T) {
+
+	expected := "test data"
+	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, expected)
+	}))
+	defer svr.Close()
+
+	g := &client{
+		client: &http.Client{
+			Timeout: time.Minute,
+		},
+	}
+	must := must.New(t)
+	header := http.Header{
+		"x-token": []string{"adjlajsdkexample"},
+	}
+
+	WithBaseHeader(header)(g)
+	WithErrorHandler(func(err error) {})(g)
+	WithBeforeRequestHandler(func(req *http.Request) {})(g)
+	WithAfterResponseHandler(func(resp *http.Response) {})(g)
+
+	res, err := g.req(svr.URL, http.MethodGet, header, []byte(""))
+	must.Nil(err)
+	must.Equal(res.String(), expected)
 }

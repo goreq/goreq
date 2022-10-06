@@ -31,6 +31,8 @@ defer resp.Body.Close()
 // do anything with the resp object
 ```
 
+> more examples, see [https://github.com/goreq/example](https://github.com/goreq/example)
+
 # Key Concept
 * Reusable, prevent options rewrite using single object for multiple request
 * Flexible, because it use raw response object

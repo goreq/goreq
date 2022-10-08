@@ -10,9 +10,11 @@ import (
 
 func TestOptions(t *testing.T) {
 	var (
-		expectedTimeout              = 1 * time.Second
-		expectedBaseUrl              = "http://127.0.0.1/"
-		expectedBaseHeader           = &fasthttp.RequestHeader{}
+		expectedTimeout    = 1 * time.Second
+		expectedBaseUrl    = "http://127.0.0.1/"
+		expectedBaseHeader = &Header{
+			&fasthttp.RequestHeader{},
+		}
 		expectedBody                 = []byte("test")
 		expectedErrHandler           = ErrorHandler(func(err error) {})
 		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *fasthttp.Request) {})
@@ -54,9 +56,11 @@ func TestOptions(t *testing.T) {
 
 func TestResolveOptions(t *testing.T) {
 	var (
-		expectedTimeout              = 1 * time.Second
-		expectedBaseUrl              = "http://127.0.0.1/"
-		expectedBaseHeader           = &fasthttp.RequestHeader{}
+		expectedTimeout    = 1 * time.Second
+		expectedBaseUrl    = "http://127.0.0.1/"
+		expectedBaseHeader = &Header{
+			&fasthttp.RequestHeader{},
+		}
 		expectedBody                 = []byte("test")
 		expectedErrHandler           = ErrorHandler(func(err error) {})
 		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *fasthttp.Request) {})

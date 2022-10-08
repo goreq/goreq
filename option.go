@@ -20,18 +20,17 @@ func WithBaseURL(url string) Option {
 	}
 }
 
-func WithBaseHeader(header *fasthttp.RequestHeader) Option {
+func WithBaseHeader(header *Header) Option {
 	return func(c *client) {
 		c.baseHeader = header
 	}
 }
 
-func WithHeader(header *fasthttp.RequestHeader) Option {
+func WithHeader(header *Header) Option {
 	return func(c *client) {
 		newHeader := c.baseHeader
-
 		header.VisitAll(func(key, value []byte) {
-			newHeader.Set(string(key), string(value))
+			newHeader.SetBytesKV(key, value)
 		})
 
 		c.baseHeader = newHeader

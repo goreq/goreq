@@ -19,3 +19,7 @@ type Gore interface {
 type ErrorHandler func(err error)
 type BeforeRequestHandler func(req *fasthttp.Request)
 type AfterResponseHandler func(resp *fasthttp.Response)
+
+type Header struct {
+	*fasthttp.RequestHeader
+}

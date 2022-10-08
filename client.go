@@ -15,7 +15,7 @@ type client struct {
 	client        *fasthttp.Client
 	timeout       time.Duration
 	baseURL       string
-	baseHeader    *fasthttp.RequestHeader
+	baseHeader    *Header
 	temporaryBody []byte
 	baseRequest   *fasthttp.Request
 	baseResponse  *fasthttp.Response
@@ -38,7 +38,9 @@ func New(opts ...Option) Gore {
 		jsonDecoder:  defaultJsonDecoder,
 		baseRequest:  fasthttp.AcquireRequest(),
 		baseResponse: fasthttp.AcquireResponse(),
-		baseHeader:   &fasthttp.RequestHeader{},
+		baseHeader: &Header{
+			&fasthttp.RequestHeader{},
+		},
 	}
 
 	resolveOptions(c, opts...)
@@ -97,7 +99,7 @@ func (c *client) buildReq(reqUrl string, method string, body []byte) {
 	req.SetURI(reqUrlParsed)
 	fasthttp.ReleaseURI(reqUrlParsed)
 
-	req.Header = *c.baseHeader
+	req.Header = *c.baseHeader.RequestHeader
 	req.Header.SetMethod(method)
 	req.SetBody(body)
 }

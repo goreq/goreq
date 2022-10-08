@@ -1,22 +1,24 @@
 package goreq
 
 import (
-	"net/http"
 	"testing"
 	"time"
 
 	"github.com/golang-must/must"
+	"github.com/valyala/fasthttp"
 )
 
 func TestOptions(t *testing.T) {
 	var (
-		expectedTimeout              = 1 * time.Second
-		expectedBaseUrl              = "http://127.0.0.1/"
-		expectedBaseHeader           = http.Header{"test": {"true"}}
+		expectedTimeout    = 1 * time.Second
+		expectedBaseUrl    = "http://127.0.0.1/"
+		expectedBaseHeader = &Header{
+			&fasthttp.RequestHeader{},
+		}
 		expectedBody                 = []byte("test")
 		expectedErrHandler           = ErrorHandler(func(err error) {})
-		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *http.Request) {})
-		expectedAfterRequestHandler  = AfterResponseHandler(func(resp *http.Response) {})
+		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *fasthttp.Request) {})
+		expectedAfterRequestHandler  = AfterResponseHandler(func(resp *fasthttp.Response) {})
 	)
 
 	c := &client{}
@@ -30,13 +32,10 @@ func TestOptions(t *testing.T) {
 
 	WithBaseHeader(expectedBaseHeader)(c)
 	WithHeader(expectedBaseHeader)(c)
-	newHeader := make(http.Header)
-	for key, val := range expectedBaseHeader {
-		newHeader[key] = val
-	}
-	for key, val := range expectedBaseHeader {
-		newHeader[key] = val
-	}
+	newHeader := expectedBaseHeader
+	expectedBaseHeader.VisitAll(func(key, value []byte) {
+		newHeader.Set(string(key), string(value))
+	})
 	must.Equal(c.baseHeader, newHeader)
 
 	WithBody(expectedBody)(c)
@@ -57,14 +56,18 @@ func TestOptions(t *testing.T) {
 
 func TestResolveOptions(t *testing.T) {
 	var (
-		expectedTimeout              = 1 * time.Second
-		expectedBaseUrl              = "http://127.0.0.1/"
-		expectedBaseHeader           = http.Header{"test": {"true"}}
+		expectedTimeout    = 1 * time.Second
+		expectedBaseUrl    = "http://127.0.0.1/"
+		expectedBaseHeader = &Header{
+			&fasthttp.RequestHeader{},
+		}
 		expectedBody                 = []byte("test")
 		expectedErrHandler           = ErrorHandler(func(err error) {})
-		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *http.Request) {})
-		expectedAfterRequestHandler  = AfterResponseHandler(func(resp *http.Response) {})
+		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *fasthttp.Request) {})
+		expectedAfterRequestHandler  = AfterResponseHandler(func(resp *fasthttp.Response) {})
 	)
+
+	expectedBaseHeader.Add("x-token", "akldsasklkhtrue")
 
 	c := &client{}
 	must := must.New(t)
@@ -93,13 +96,11 @@ func TestResolveOptions(t *testing.T) {
 	must.NotNil(c.jsonEncoder)
 	must.NotNil(c.jsonDecoder)
 
-	newHeader := make(http.Header)
-	for key, val := range expectedBaseHeader {
-		newHeader[key] = val
-	}
-	for key, val := range expectedBaseHeader {
-		newHeader[key] = val
-	}
+	newHeader := expectedBaseHeader
+	expectedBaseHeader.VisitAll(func(key, value []byte) {
+		newHeader.Set(string(key), string(value))
+	})
+
 	must.Equal(c.baseHeader, newHeader)
 
 }

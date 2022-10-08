@@ -1,21 +1,21 @@
 package goreq
 
 func Get(url string, opts ...Option) (*Response, error) {
-	return New(opts...).Get(url)
+	return defaultClient.Get(url, opts...)
 }
 
 func Post(url string, opts ...Option) (*Response, error) {
-	return New(opts...).Post(url, opts...)
+	return defaultClient.Post(url, opts...)
 }
 
 func Put(url string, opts ...Option) (*Response, error) {
-	return New(opts...).Put(url, opts...)
+	return defaultClient.Put(url, opts...)
 }
 
 func Patch(url string, opts ...Option) (*Response, error) {
-	return New(opts...).Patch(url, opts...)
+	return defaultClient.Patch(url, opts...)
 }
 
 func Delete(url string, opts ...Option) (*Response, error) {
-	return New(opts...).Delete(url, opts...)
+	return defaultClient.Delete(url, opts...)
 }

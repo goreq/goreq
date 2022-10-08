@@ -12,6 +12,22 @@ import (
 	"github.com/golang-must/must"
 )
 
+func TestClientEncode(t *testing.T) {
+	input := map[string]int{"id": 1}
+
+	must := must.New(t)
+
+	g := New()
+
+	var expected = new(bytes.Buffer)
+	json.NewEncoder(expected).Encode(input)
+
+	var result = new(bytes.Buffer)
+	err := g.JsonEncode(result, input)
+	must.Nil(err)
+	must.Equal(expected, result)
+}
+
 func TestClientGet(t *testing.T) {
 	expected := "test data"
 	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -176,4 +192,42 @@ func TestClientReq(t *testing.T) {
 	res, err := g.req(svr.URL, http.MethodGet, header, []byte(""))
 	must.Nil(err)
 	must.Equal(res.String(), expected)
+}
+
+func BenchmarkClientDefaultJsonEncoder(b *testing.B) {
+	expected := `[{"id": 1},{"id": 2},{"id": 3},{"id": 4},{"id": 5}]`
+	g := New()
+
+	type Data struct {
+		ID int `json:"id"`
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		var data []Data
+		g.JsonEncode(bytes.NewBuffer([]byte(expected)), &data)
+	}
+
+}
+
+func BenchmarkClientDefaultJsonDecoder(b *testing.B) {
+	expected := `[{"id": 1},{"id": 2},{"id": 3},{"id": 4},{"id": 5}]`
+	svr := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, expected)
+	}))
+	defer svr.Close()
+
+	type Data struct {
+		ID int `json:"id"`
+	}
+
+	g := New()
+	res, _ := g.Get(svr.URL)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		var data []Data
+		res.Json(&data)
+	}
+
 }

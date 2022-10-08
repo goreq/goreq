@@ -16,6 +16,8 @@ func TestResponse_String(t *testing.T) {
 		&http.Response{
 			Body: io.NopCloser(bytes.NewBuffer([]byte(expectedBody))),
 		},
+		defaultJsonEncoder,
+		defaultJsonDecoder,
 	}
 
 	must := must.New(t)
@@ -36,6 +38,8 @@ func TestResponse_Json(t *testing.T) {
 		&http.Response{
 			Body: io.NopCloser(bytes.NewBuffer(resBody)),
 		},
+		defaultJsonEncoder,
+		defaultJsonDecoder,
 	}
 
 	var resp map[string]interface{}
@@ -50,6 +54,8 @@ func TestResponse_JsonWithDecodeError(t *testing.T) {
 		&http.Response{
 			Body: io.NopCloser(bytes.NewBuffer([]byte("error"))),
 		},
+		defaultJsonEncoder,
+		defaultJsonDecoder,
 	}
 
 	must := must.New(t)

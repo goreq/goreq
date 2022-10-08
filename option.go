@@ -66,3 +66,15 @@ func WithAfterResponseHandler(handlers ...AfterResponseHandler) Option {
 		}
 	}
 }
+
+func WithJsonEncoder(encoder JsonEncoderFunc) Option {
+	return func(c *client) {
+		c.jsonEncoder = encoder
+	}
+}
+
+func WithJsonDecoder(decoder JsonDecoderFunc) Option {
+	return func(c *client) {
+		c.jsonDecoder = decoder
+	}
+}

@@ -80,6 +80,8 @@ func TestResolveOptions(t *testing.T) {
 		WithAfterResponseHandler(expectedAfterRequestHandler),
 		WithHeader(expectedBaseHeader),
 		WithErrorHandler(expectedErrHandler),
+		WithJsonEncoder(defaultJsonEncoder),
+		WithJsonDecoder(defaultJsonDecoder),
 	)
 
 	must.Equal(c.timeout, expectedTimeout)
@@ -88,6 +90,8 @@ func TestResolveOptions(t *testing.T) {
 	must.NotNil(c.beforeRequestHandler)
 	must.NotNil(c.afterResponseHandler)
 	must.NotNil(c.errorHandler)
+	must.NotNil(c.jsonEncoder)
+	must.NotNil(c.jsonDecoder)
 
 	newHeader := make(http.Header)
 	for key, val := range expectedBaseHeader {

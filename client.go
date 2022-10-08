@@ -2,7 +2,9 @@ package goreq
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -19,10 +21,19 @@ type client struct {
 	errorHandler         ErrorHandler
 	beforeRequestHandler BeforeRequestHandler
 	afterResponseHandler AfterResponseHandler
+	jsonEncoder          JsonEncoderFunc
+	jsonDecoder          JsonDecoderFunc
 }
 
+type JsonEncoderFunc func(io.Writer) JsonEncoder
+type JsonDecoderFunc func(io.Reader) JsonDecoder
+
 func New(opts ...Option) Gore {
-	c := &client{}
+	c := &client{
+		jsonEncoder: defaultJsonEncoder,
+		jsonDecoder: defaultJsonDecoder,
+	}
+
 	resolveOptions(c, opts...)
 	c.client = &http.Client{
 		Timeout: c.timeout,
@@ -37,6 +48,14 @@ func resolveOptions(c *client, opts ...Option) {
 			opt(c)
 		}
 	}
+}
+
+func defaultJsonEncoder(w io.Writer) JsonEncoder {
+	return json.NewEncoder(w)
+}
+
+func defaultJsonDecoder(r io.Reader) JsonDecoder {
+	return json.NewDecoder(r)
 }
 
 func (c client) validateURL(fromUrl string) error {
@@ -87,7 +106,11 @@ func (c client) req(reqUrl string, method string, header http.Header, body []byt
 		c.afterResponseHandler(resp)
 	}
 
-	return &Response{resp}, nil
+	return &Response{resp, c.jsonEncoder, c.jsonDecoder}, nil
+}
+
+func (c client) JsonEncode(w io.Writer, v interface{}) error {
+	return c.jsonEncoder(w).Encode(v)
 }
 
 func (c client) Get(reqUrl string, opts ...Option) (*Response, error) {

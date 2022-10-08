@@ -28,6 +28,8 @@ type client struct {
 type JsonEncoderFunc func(io.Writer) JsonEncoder
 type JsonDecoderFunc func(io.Reader) JsonDecoder
 
+var defaultClient = New()
+
 func New(opts ...Option) Gore {
 	c := &client{
 		jsonEncoder: defaultJsonEncoder,

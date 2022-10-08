@@ -1,6 +1,13 @@
 # GoReq (Go Requester)
 Simple HTTP client for Go
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/goreq/goreq)](https://goreportcard.com/report/github.com/goreq/goreq)
+
+
+* [Documentation](https://pkg.go.dev/github.com/goreq/goreq)
+* [Coverage](https://gocover.io/github.com/goreq/goreq)
+* [Examples](https://github.com/goreq/example)
+
 # Example
 
 ```go

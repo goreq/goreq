@@ -2,7 +2,8 @@ package goreq
 
 import (
 	"io"
-	"net/http"
+
+	"github.com/valyala/fasthttp"
 )
 
 type Gore interface {
@@ -12,9 +13,9 @@ type Gore interface {
 	Put(url string, opts ...Option) (*Response, error)
 	Patch(url string, opts ...Option) (*Response, error)
 	Delete(url string, opts ...Option) (*Response, error)
-	Do(*http.Request) (*Response, error)
+	Do() (*Response, error)
 }
 
 type ErrorHandler func(err error)
-type BeforeRequestHandler func(req *http.Request)
-type AfterResponseHandler func(resp *http.Response)
+type BeforeRequestHandler func(req *fasthttp.Request)
+type AfterResponseHandler func(resp *fasthttp.Response)

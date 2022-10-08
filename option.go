@@ -1,8 +1,9 @@
 package goreq
 
 import (
-	"net/http"
 	"time"
+
+	"github.com/valyala/fasthttp"
 )
 
 type Option func(*client)
@@ -19,21 +20,19 @@ func WithBaseURL(url string) Option {
 	}
 }
 
-func WithBaseHeader(header http.Header) Option {
+func WithBaseHeader(header *fasthttp.RequestHeader) Option {
 	return func(c *client) {
 		c.baseHeader = header
 	}
 }
 
-func WithHeader(header http.Header) Option {
+func WithHeader(header *fasthttp.RequestHeader) Option {
 	return func(c *client) {
-		newHeader := make(http.Header)
-		for key, val := range c.baseHeader {
-			newHeader[key] = val
-		}
-		for key, val := range header {
-			newHeader[key] = val
-		}
+		newHeader := c.baseHeader
+
+		header.VisitAll(func(key, value []byte) {
+			newHeader.Set(string(key), string(value))
+		})
 
 		c.baseHeader = newHeader
 	}
@@ -59,7 +58,7 @@ func WithBeforeRequestHandler(handler BeforeRequestHandler) Option {
 
 func WithAfterResponseHandler(handlers ...AfterResponseHandler) Option {
 	return func(c *client) {
-		c.afterResponseHandler = func(resp *http.Response) {
+		c.afterResponseHandler = func(resp *fasthttp.Response) {
 			for _, handler := range handlers {
 				handler(resp)
 			}

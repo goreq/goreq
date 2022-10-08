@@ -1,24 +1,21 @@
 package goreq
 
 import (
-	"bytes"
 	"encoding/json"
-	"io"
-	"net/http"
 	"testing"
 
 	"github.com/golang-must/must"
+	"github.com/valyala/fasthttp"
 )
 
 func TestResponse_String(t *testing.T) {
 	expectedBody := "test"
 	r := Response{
-		&http.Response{
-			Body: io.NopCloser(bytes.NewBuffer([]byte(expectedBody))),
-		},
+		&fasthttp.Response{},
 		defaultJsonEncoder,
 		defaultJsonDecoder,
 	}
+	r.SetBody([]byte(expectedBody))
 
 	must := must.New(t)
 	must.Equal(r.String(), expectedBody)
@@ -35,12 +32,11 @@ func TestResponse_Json(t *testing.T) {
 	must.Nil(err)
 
 	r := Response{
-		&http.Response{
-			Body: io.NopCloser(bytes.NewBuffer(resBody)),
-		},
+		&fasthttp.Response{},
 		defaultJsonEncoder,
 		defaultJsonDecoder,
 	}
+	r.SetBody([]byte(resBody))
 
 	var resp map[string]interface{}
 	err = r.Json(&resp)
@@ -51,12 +47,11 @@ func TestResponse_Json(t *testing.T) {
 
 func TestResponse_JsonWithDecodeError(t *testing.T) {
 	r := Response{
-		&http.Response{
-			Body: io.NopCloser(bytes.NewBuffer([]byte("error"))),
-		},
+		&fasthttp.Response{},
 		defaultJsonEncoder,
 		defaultJsonDecoder,
 	}
+	r.SetBody([]byte("resBody"))
 
 	must := must.New(t)
 

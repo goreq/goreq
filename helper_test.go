@@ -21,8 +21,6 @@ func TestHelperGet(t *testing.T) {
 	resp, err := Get(svr.URL)
 
 	must.Nil(err)
-	defer resp.Body.Close()
-
 	must.Equal(resp.String(), expected)
 }
 
@@ -52,8 +50,6 @@ func TestHelperPost(t *testing.T) {
 	resp, err := Post(svr.URL)
 
 	must.Nil(err)
-	defer resp.Body.Close()
-
 	must.Equal(resp.String(), expected)
 }
 
@@ -83,8 +79,6 @@ func TestHelperPut(t *testing.T) {
 	resp, err := Put(svr.URL)
 
 	must.Nil(err)
-	defer resp.Body.Close()
-
 	must.Equal(resp.String(), expected)
 }
 
@@ -114,8 +108,6 @@ func TestHelperPatch(t *testing.T) {
 	resp, err := Patch(svr.URL)
 
 	must.Nil(err)
-	defer resp.Body.Close()
-
 	must.Equal(resp.String(), expected)
 }
 
@@ -145,8 +137,6 @@ func TestHelperDelete(t *testing.T) {
 	resp, err := Delete(svr.URL)
 
 	must.Nil(err)
-	defer resp.Body.Close()
-
 	must.Equal(resp.String(), expected)
 }
 

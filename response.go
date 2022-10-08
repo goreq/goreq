@@ -32,3 +32,7 @@ func (r Response) String() string {
 	body, _ := ioutil.ReadAll(bodyReader)
 	return string(body)
 }
+
+func (r *Response) Close() {
+	fasthttp.ReleaseResponse(r.Response)
+}

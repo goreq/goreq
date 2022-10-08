@@ -1,10 +1,12 @@
 package goreq
 
 import (
+	"io"
 	"net/http"
 )
 
 type Gore interface {
+	JsonEncode(data io.Writer, v interface{}) error
 	Get(url string, opts ...Option) (*Response, error)
 	Post(url string, opts ...Option) (*Response, error)
 	Put(url string, opts ...Option) (*Response, error)

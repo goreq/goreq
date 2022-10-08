@@ -82,8 +82,8 @@ func (c *client) buildURL(fromUrl string) *fasthttp.URI {
 		fromUrl = c.baseURL + fromUrl
 	}
 
-	uri := &fasthttp.URI{}
-	uri.Update(fromUrl)
+	uri := fasthttp.AcquireURI()
+	uri.Parse(nil, []byte(fromUrl))
 
 	return uri
 }
@@ -91,8 +91,12 @@ func (c *client) buildURL(fromUrl string) *fasthttp.URI {
 func (c *client) buildReq(reqUrl string, method string, body []byte) {
 	reqUrlParsed := c.buildURL(reqUrl)
 
+	c.baseRequest = fasthttp.AcquireRequest()
 	req := c.baseRequest
+
 	req.SetURI(reqUrlParsed)
+	fasthttp.ReleaseURI(reqUrlParsed)
+
 	req.Header = *c.baseHeader
 	req.Header.SetMethod(method)
 	req.SetBody(body)
@@ -169,6 +173,7 @@ func (c client) Do() (*Response, error) {
 		}
 		return nil, err
 	}
+	fasthttp.ReleaseRequest(c.baseRequest)
 
 	if c.afterResponseHandler != nil {
 		c.afterResponseHandler(c.baseResponse)

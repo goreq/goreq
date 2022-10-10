@@ -164,8 +164,11 @@ func (c *client) Delete(reqUrl string, opts ...Option) (*Response, error) {
 }
 
 func (c client) Do() (*Response, error) {
+	req := &Request{c.baseRequest}
+	res := newResponse(&c)
+
 	if c.beforeRequestHandler != nil {
-		c.beforeRequestHandler(c.baseRequest)
+		c.beforeRequestHandler(req)
 	}
 
 	err := c.client.Do(c.baseRequest, c.baseResponse)
@@ -178,7 +181,7 @@ func (c client) Do() (*Response, error) {
 	fasthttp.ReleaseRequest(c.baseRequest)
 
 	if c.afterResponseHandler != nil {
-		c.afterResponseHandler(c.baseResponse)
+		c.afterResponseHandler(res)
 	}
 
 	return newResponse(&c), nil

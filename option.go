@@ -2,8 +2,6 @@ package goreq
 
 import (
 	"time"
-
-	"github.com/valyala/fasthttp"
 )
 
 type Option func(*client)
@@ -57,7 +55,7 @@ func WithBeforeRequestHandler(handler BeforeRequestHandler) Option {
 
 func WithAfterResponseHandler(handlers ...AfterResponseHandler) Option {
 	return func(c *client) {
-		c.afterResponseHandler = func(resp *fasthttp.Response) {
+		c.afterResponseHandler = func(resp *Response) {
 			for _, handler := range handlers {
 				handler(resp)
 			}

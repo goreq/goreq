@@ -17,8 +17,8 @@ func TestOptions(t *testing.T) {
 		}
 		expectedBody                 = []byte("test")
 		expectedErrHandler           = ErrorHandler(func(err error) {})
-		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *fasthttp.Request) {})
-		expectedAfterRequestHandler  = AfterResponseHandler(func(resp *fasthttp.Response) {})
+		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *Request) {})
+		expectedAfterRequestHandler  = AfterResponseHandler(func(resp *Response) {})
 	)
 
 	c := &client{}
@@ -63,8 +63,8 @@ func TestResolveOptions(t *testing.T) {
 		}
 		expectedBody                 = []byte("test")
 		expectedErrHandler           = ErrorHandler(func(err error) {})
-		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *fasthttp.Request) {})
-		expectedAfterRequestHandler  = AfterResponseHandler(func(resp *fasthttp.Response) {})
+		expectedBeforeRequestHandler = BeforeRequestHandler(func(req *Request) {})
+		expectedAfterRequestHandler  = AfterResponseHandler(func(resp *Response) {})
 	)
 
 	expectedBaseHeader.Add("x-token", "akldsasklkhtrue")
